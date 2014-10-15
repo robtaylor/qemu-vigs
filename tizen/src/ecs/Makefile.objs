@@ -1,4 +1,6 @@
 obj-y += genmsg/ecs.pb-c.o genmsg/ecs_ids.pb-c.o ../../distrib/protobuf/protobuf-c.o
-obj-y += ecs_msg.o ecs.o ecs_sensor.o
+obj-y += ecs.o ecs_msg.o ecs_msg_injector.o ecs_msg_device.o
 obj-y += ecs_mon.o ecs-json-streamer.o
 obj-y += ecs_eventcast.o
+obj-y += ecs_sensor.o
+obj-y += ecs_nfc.o

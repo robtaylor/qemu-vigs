@@ -244,7 +244,7 @@ static bool send_eventcast_ntf(const char *data)
     master.type = ECS__MASTER__TYPE__EVENTCAST_NTF;
     master.eventcast_ntf = &ntf;
 
-    send_to_ecp(&master);
+    pb_to_all_clients(&master);
 
     if (ntf.data.data && ntf.data.len > 0) {
         g_free(ntf.data.data);
