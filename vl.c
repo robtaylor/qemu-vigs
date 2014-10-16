@@ -143,10 +143,12 @@ int qemu_main(int argc, char **argv, char **envp);
 #define MAX_VIRTIO_CONSOLES 1
 #define MAX_SCLP_CONSOLES 1
 
+#ifndef CONFIG_MARU
 int enable_yagl;
 static const char *yagl_backend = NULL;
 static int enable_vigs = 0;
 static char *vigs_backend = NULL;
+#endif
 
 #ifdef CONFIG_MARU
 int skin_disabled = 0;
