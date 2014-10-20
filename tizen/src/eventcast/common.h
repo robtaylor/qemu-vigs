@@ -28,6 +28,9 @@
  *
  */
 
+#ifndef __EVENTCAST_COMMON_H__
+#define __EVENTCAST_COMMON_H__
+
 enum connection_status {
     DISCONNECTED = 0,
     CONNECTED,
@@ -51,3 +54,5 @@ int get_eventcast_connection_status(void);
 int get_eventcast_connected_port(void);
 
 const char *get_eventcast_connected_ipaddr(void);
+
+#endif /* __EVENTCAST_COMMON_H__ */

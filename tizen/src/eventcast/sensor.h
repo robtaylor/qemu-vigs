@@ -28,8 +28,13 @@
  *
  */
 
+#ifndef __EVENTCAST_SENSOR_H__
+#define __EVENTCAST_SENSOR_H__
+
 bool msgproc_eventcast_sensor_msg(void *msg);
 
 int get_eventcast_sensor_status(void);
 
 void set_eventcast_sensor_status(int status);
+
+#endif /* __EVENTCAST_SENSOR_H__ */
