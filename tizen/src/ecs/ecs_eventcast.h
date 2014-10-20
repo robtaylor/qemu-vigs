@@ -28,6 +28,9 @@
  *
  */
 
+#ifndef __ECS_EVENTCAST_H__
+#define __ECS_EVENTCAST_H__
+
 /*
  * define eventcast messages between ecs and ecp
  */
@@ -53,3 +56,5 @@ void send_eventcast_sensor_data(const char *data, int len);
 void send_eventcast_touch_data(int x, int y, int index, int status);
 
 void send_eventcast_hwkey_data(int keycode);
+
+#endif /* __ECS_EVENTCAST_H__ */

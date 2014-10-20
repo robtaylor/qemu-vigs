@@ -176,7 +176,12 @@ bool ntf_to_injector(const char* data, const int len);
 bool ntf_to_control(const char* data, const int len);
 bool ntf_to_monitor(const char* data, const int len);
 
-bool send_to_ecp(ECS__Master* master);
+bool send_msg_to_guest(ECS_Client* ccli, char* cmd, int group, int action,
+                       char* data, int data_len);
+void make_send_device_ntf (char* cmd, int group, int action, char* data);
+
+bool pb_to_all_clients(ECS__Master* master);
+bool pb_to_single_client(ECS__Master* master, ECS_Client *clii);
 
 bool send_injector_ntf(const char* data, const int len);
 bool send_monitor_ntf(const char* data, const int len);

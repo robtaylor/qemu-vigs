@@ -28,6 +28,9 @@
  *
  */
 
+#ifndef __EVENTCAST_TOUCH_H__
+#define __EVENTCAST_TOUCH_H__
+
 enum {
     ENCODE_WEBP = 0,
     ENCODE_PNG,
@@ -38,3 +41,5 @@ bool msgproc_eventcast_touch_msg(void *message);
 int get_eventcast_touch_status(void);
 
 void set_eventcast_touch_status(int status);
+
+#endif /* __EVENTCAST_TOUCH_H__ */

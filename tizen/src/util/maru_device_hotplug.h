@@ -34,6 +34,8 @@ enum command {
     DETACH_HOST_KEYBOARD,
     ATTACH_SDCARD,
     DETACH_SDCARD,
+    ATTACH_HDS,
+    DETACH_HDS,
 };
 
 void maru_device_hotplug_init(void);
@@ -42,5 +44,6 @@ void do_hotplug(int command, void *opaque, size_t size);
 
 bool is_host_keyboard_attached(void);
 bool is_sdcard_attached(void);
+bool is_hds_attached(void);
 
 #endif // _MARU_DEVICE_HOTPLUG_H_

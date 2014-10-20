@@ -28,6 +28,9 @@
  *
  */
 
+#ifndef __EVENTCAST_ENCODE_FB_H__
+#define __EVENTCAST_ENCODE_FB_H__
+
 struct encode_mem {
     uint8_t *buffer;
     uint32_t length;
@@ -40,3 +43,5 @@ bool maru_extract_framebuffer(void *buffer);
 void set_display_dirty(bool dirty);
 
 bool is_display_dirty(void);
+
+#endif /* __EVENTCAST_ENCODE_FB_H__ */

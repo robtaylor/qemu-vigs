@@ -101,3 +101,20 @@ FsDriverEntry *get_fsdev_fsentry(char *id)
     }
     return NULL;
 }
+
+void qemu_fsdev_remove(const char * const id)
+{
+    if (id) {
+        struct FsDriverListEntry *fsle;
+
+        QTAILQ_FOREACH(fsle, &fsdriver_entries, next) {
+            if (strcmp(fsle->fse.fsdev_id, id) == 0) {
+                QTAILQ_REMOVE(&fsdriver_entries, fsle, next);
+                g_free(fsle->fse.fsdev_id);
+                g_free(fsle);
+                break;
+            }
+        }
+    }
+}
+

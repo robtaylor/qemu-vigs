@@ -40,6 +40,7 @@ typedef struct FsDriverListEntry {
 } FsDriverListEntry;
 
 int qemu_fsdev_add(QemuOpts *opts);
+void qemu_fsdev_remove(const char * const id);
 FsDriverEntry *get_fsdev_fsentry(char *id);
 extern FileOperations local_ops;
 extern FileOperations handle_ops;

@@ -57,7 +57,7 @@ enum _debug_class
 struct _debug_channel
 {
     unsigned char flags;
-    char name[MAX_NAME_LEN];
+    char name[MAX_NAME_LEN + 1];
 };
 
 #ifndef NO_DEBUG
