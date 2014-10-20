@@ -1083,7 +1083,7 @@ static void* run_skin_server(void* args)
                         do_host_kbd_enable(true);
                     }
 
-                    send_host_keyboard_ntf((on == 0) ? 0 : 1);
+                    //send_host_keyboard_ntf((on == 0) ? 0 : 1);
                     break;
                 }
                 case RECV_INTERPOLATION_STATE: {

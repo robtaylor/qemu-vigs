@@ -112,7 +112,7 @@ bool send_monitor_ntf(const char* data, int size)
     master.type = ECS__MASTER__TYPE__MONITOR_NTF;
     master.monitor_ntf = &ntf;
 
-    send_to_ecp(&master);
+    pb_to_all_clients(&master);
 
     if (ntf.command)
         g_free(ntf.command);

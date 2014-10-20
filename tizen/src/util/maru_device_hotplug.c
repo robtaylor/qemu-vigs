@@ -30,6 +30,7 @@
 #include "qemu/config-file.h"
 #include "hw/qdev.h"
 #include "monitor/qdev.h"
+#include "fsdev/qemu-fsdev.h"
 #include "qmp-commands.h"
 #include "sysemu/blockdev.h"
 #include "qemu/event_notifier.h"
@@ -44,6 +45,8 @@
 #define SDCARD_DRIVER               "virtio-blk-pci"
 #define SDCARD_DEFAULT_ID           "SDCARD0"
 
+#define FS_MOUNT_TAG                "fileshare"
+
 struct maru_device_hotplug {
     EventNotifier notifier;
 
@@ -53,6 +56,7 @@ struct maru_device_hotplug {
     // FIXME: Should we query device every time ??
     bool host_keyboard_attached;
     bool sdcard_attached;
+    bool hds_attached;
 };
 
 static struct maru_device_hotplug *state;
@@ -148,6 +152,64 @@ static bool do_sdcard_detach(void) {
     return true;
 }
 
+static bool do_hds_attach(const char * const file)
+{
+    QemuOpts *fsdev;
+    int ret;
+    QDict *qdict = qdict_new();
+
+    fsdev = qemu_opts_create(qemu_find_opts("fsdev"),
+                             FS_MOUNT_TAG, 0, NULL);
+    if (!fsdev) {
+        return false;
+    }
+
+    qemu_opt_set(fsdev, "fsdriver", "local");
+    qemu_opt_set(fsdev, "path", file);
+    qemu_opt_set(fsdev, "security_model", "none");
+
+    ret = qemu_fsdev_add(fsdev);
+    if (ret != 0) {
+        return false;
+    }
+
+    qdict = qdict_new();
+    qdict_put(qdict, "driver", qstring_from_str("virtio-9p-pci"));
+    qdict_put(qdict, "fsdev", qstring_from_str(FS_MOUNT_TAG));
+    qdict_put(qdict, "mount_tag", qstring_from_str(FS_MOUNT_TAG));
+    qdict_put(qdict, "id", qstring_from_str(FS_MOUNT_TAG));
+
+    if (do_device_add(default_mon, qdict, NULL)) {
+        QDECREF(qdict);
+        return false;
+    }
+
+    QDECREF(qdict);
+
+    state->hds_attached = true;
+
+    return true;
+}
+
+static bool do_hds_detach(void)
+{
+    QDict *qdict = qdict_new();
+    qemu_fsdev_remove(FS_MOUNT_TAG);
+
+    qdict_put(qdict, "id", qstring_from_str(FS_MOUNT_TAG));
+
+    if (qmp_marshal_input_device_del(cur_mon, qdict, NULL)) {
+        QDECREF(qdict);
+        return false;
+    }
+
+    QDECREF(qdict);
+
+    state->hds_attached = false;
+
+    return true;
+}
+
 void do_hotplug(int command, void *opaque, size_t size)
 {
     if (command == ATTACH_SDCARD) {
@@ -176,6 +238,12 @@ static void device_hotplug_handler(EventNotifier *e)
         break;
     case DETACH_SDCARD:
         do_sdcard_detach();
+        break;
+    case ATTACH_HDS:
+        do_hds_attach(state->opaque);
+        break;
+    case DETACH_HDS:
+        do_hds_detach();
         break;
     default:
         break;
@@ -209,5 +277,10 @@ bool is_host_keyboard_attached(void)
 bool is_sdcard_attached(void)
 {
     return state->sdcard_attached;
+}
+
+bool is_hds_attached(void)
+{
+    return state->hds_attached;
 }
 
