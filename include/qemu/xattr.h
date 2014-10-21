@@ -26,11 +26,9 @@
 #ifndef ENOATTR
 #  define ENOATTR ENODATA
 #endif
-# ifdef CONFIG_MARU
-#  ifndef CONFIG_WIN32
+#ifndef CONFIG_WIN32
 #  include <sys/xattr.h>
-#  endif
-# endif
+#endif
 #endif
 
 #endif
